@@ -5,19 +5,24 @@
     <section>
         <base-card>
             <div class="controls">
-                <base-button mode="outline">Refresh</base-button>
+                <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
                 <base-button v-if="!isCoach" link to="/register">Register as Coach</base-button>
             </div>
-            <ul v-if="hasCoaches">
-                <coach-item 
-                v-for="coach in filteredCoaches" 
-                :key="coach.id" :id="coach.id" 
-                :first-name="coach.firstName"
-                :last-name="coach.lastName"
-                :rate="coach.hourlyRate"
-                :areas="coach.areas"></coach-item>
-            </ul>
-            <h3 v-else>Not Found</h3>
+            <div v-if="isLoading">
+                <base-spinner></base-spinner>
+            </div>
+            <div v-else>
+                <ul v-if="hasCoaches">
+                    <coach-item 
+                    v-for="coach in filteredCoaches" 
+                    :key="coach.id" :id="coach.id" 
+                    :first-name="coach.firstName"
+                    :last-name="coach.lastName"
+                    :rate="coach.hourlyRate"
+                    :areas="coach.areas"></coach-item>
+                </ul>
+                <h3 v-else>Not Found</h3>
+            </div>
         </base-card>
     </section>
 </template>
@@ -32,6 +37,7 @@ export default {
     },
     data(){
         return{
+            isLoading:false,
             activeFilter:{
                 frontend:true,
                 backend:true,
@@ -63,9 +69,17 @@ export default {
             return this.$store.getters['coaches/isCoach']
         }
     },
+    created(){
+        this.loadCoaches();
+    },
     methods:{
         setFilter(updatedFilter){
             this.activeFilter = updatedFilter
+        },
+        async loadCoaches(){
+            this.isLoading = true;
+            await this.$store.dispatch('coaches/loadCoaches')
+            this.isLoading = false;
         }
     }
 }
