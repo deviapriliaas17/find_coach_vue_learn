@@ -1,4 +1,5 @@
 <template>
+  <div>
     <section>
         <base-card>
             <h2>{{ fullName }}</h2>
@@ -21,6 +22,7 @@
             </base-badge>
         </base-card>
     </section>
+  </div>
 </template>
 <script>
 export default {

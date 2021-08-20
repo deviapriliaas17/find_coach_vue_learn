@@ -4,5 +4,8 @@ export default {
     },
     setCoaches(state, payLoad){
         state.coaches = payLoad
+    },
+    setFetchTimestamp(state){
+        state.lastFetch = new Date().getTime();
     }
 }

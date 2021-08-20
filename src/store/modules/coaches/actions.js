@@ -28,7 +28,12 @@ export default{
             id:userId
         })
    },
-    async loadCoaches(context){
+    async loadCoaches(context, payLoad){
+
+        if(!payLoad.forceRefresh && !context.getters.shouldUpdate){
+          return;
+        }
+
         const response = await fetch(
          `https://coaches-a06e4-default-rtdb.firebaseio.com/coaches.json`);
 
@@ -54,6 +59,6 @@ export default{
          }
 
          context.commit('setCoaches', coaches)
-
+         context.commit('setFetchTimestamp')
    }
-}
+};
