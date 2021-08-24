@@ -39,7 +39,7 @@ export default{
             const error = new Error(responseData.message) || 'Failed to fetch requests';
             throw error
         }
-        console.log(responseData)
+        console.log(response)
 
         const requests = [];
 
