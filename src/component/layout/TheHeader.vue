@@ -21,12 +21,22 @@
     computed:{
       isLoggedIn(){
         return this.$store.getters.isAuthenticated
+      },
+      didAutoLogout(){
+        return this.$store.getters.didAutoLogout;
       }
     },
     methods:{
       logout(){
         this.$store.dispatch('logout')
         this.$router.replace('/login')
+      },
+    },
+    watch:{
+      didAutoLogout(curValue, oldValue){
+        if(curValue && curValue !== oldValue){
+          this.$router.replace('/coaches')
+        }
       }
     }
   }
